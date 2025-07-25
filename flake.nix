@@ -23,6 +23,9 @@
     home-manager,
     ...
   }: {
+
+    nixosModules.nixos95 = import ./nixos95;
+
     nixosConfigurations = {
       ############################################################
       # 💻 Default Host

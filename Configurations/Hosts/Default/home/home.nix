@@ -24,9 +24,6 @@ in {
     # All Home Manager Modules
     ../../../../Modules/Applications
 
-    # Extended Retro theme
-    ../../../../Modules/Desktops/XFCE-retro
-  
     # Desktop applications
     ./desktop.nix
   ];
