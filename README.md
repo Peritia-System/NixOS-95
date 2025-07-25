@@ -40,11 +40,15 @@ NixOS-95/
 │               └── user-vars.nix
 ├── Modules/
 │   ├── Applications/
-│   ├── Desktops/
-│   │   └── XFCE-retro/
-│   │       ├── default.nix
-│   │       └── Dotfiles/
 │   └── System/
+├── nixos95
+│   ├── dotfiles/
+│   ├── core.nix
+│   ├── default.nix
+│   ├── desktop.nix
+│   ├── keybinds.nix
+│   ├── taskbar.nix
+│   └── theme.nix
 ├── Ressources/
 │   ├── Icons/
 │   ├── Images/
