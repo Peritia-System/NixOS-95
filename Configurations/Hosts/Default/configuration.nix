@@ -34,6 +34,37 @@ in {
   nixos95 = {
     enable = true;
     user = username;
+
+    taskbar = {
+      homeIcon = "whisker-menu-button";
+      battery-plugin.enable = false;
+      applications = [
+        {
+          name = "Brave";
+          description = "Browse the Web";
+          pkg = pkgs.brave;
+          icon = "world";
+        }
+        {
+          name = "Signal";
+          description = "Private Messenger";
+          pkg = pkgs.signal-desktop;
+          icon = "signal";
+        }
+        {
+          name = "Obsidian";
+          description = "Markdown Editor";
+          exe = "obsidian %u";
+          icon = "obsidian";
+        }
+        {
+          name = "Spotify";
+          description = "Spotify Music";
+          exe = "spotify %U";
+          icon = "spotify";
+        }
+      ];
+    };
   };
 
   ################################################################
