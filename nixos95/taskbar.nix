@@ -147,8 +147,8 @@ in {
             display_time=false
             tooltip_display_percentage=true
             tooltip_display_time=false
-            low_percentage=${bar.warning_at}
-            critical_percentage=${bar.critical_at}
+            low_percentage=${builtins.toString bar.warning_at}
+            critical_percentage=${builtins.toString bar.critical_at}
             action_on_low=1
             action_on_critical=1
             hide_when_full=0
