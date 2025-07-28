@@ -115,7 +115,7 @@ in {
               plugin_id = "2" + builtins.toString ptr; 
               plugin_desktop = let 
                 desc = if elm ? description then elm.description else "";
-                term = if elm ? term && elm.term then "true" else "false";
+                term = if elm ? terminal && elm.terminal then "true" else "false";
                 exec = slib.getExe elm;
               in pkgs.writeTextFile {
                 name = "${elm.name}.desktop";
