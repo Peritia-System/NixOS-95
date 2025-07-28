@@ -7,6 +7,7 @@
   user = config.nixos95.user;
   t = lib.types;
   slib = pkgs.callPackage ./util/lib.nix { };
+
 in {
 
   options.nixos95.taskbar = {
@@ -36,6 +37,42 @@ in {
         default = true;
         example = false;
         type = t.bool;
+      };
+      power_bar = let 
+        mkColor = state : default : lib.mkOption {
+          description = "Color to show while ${state}";
+          type = t.str;
+          inherit default;
+        };
+      in {
+        enable = lib.mkOption {
+          description = ''
+            Enable the power bar, which shows the charging level.
+          '';
+          type = t.bool;
+          default = true;
+          example = false;
+        };
+        critical_at = lib.mkOption {
+          description = ''
+            Set the maximum battery percentage of the "critical" state
+          '';
+          type = t.int;
+          default = 10;
+          example = 20;
+        };
+        warning_at = lib.mkOption {
+          description = ''
+            Set the maximum battery percentage of the "warning" state
+          '';
+          type = t.int;
+          default = 20;
+          example = 30;
+        };
+        color_warning = mkColor "in a warning state" "rgb(248,228,92)";
+        color_critical = mkColor "in a critical state" "rgb(237,51,59)";
+        color_loading = mkColor "charging" "rgb(119,118,123)";
+        color_default = mkColor "discharging" "rgb(143,240,164)";
       };
     };
 
@@ -99,6 +136,29 @@ in {
         "xfce4/panel/battery-7.rc" = {
           force = true;
           enable = cfg.battery-plugin.enable;
+          text = let 
+            bar = cfg.battery-plugin.power_bar;
+          in ''
+            display_label=false
+            display_icon=true
+            display_power=false
+            display_percentage=false
+            display_bar=${if bar.enable then "true" else "false"}
+            display_time=false
+            tooltip_display_percentage=true
+            tooltip_display_time=false
+            low_percentage=${bar.warning_at}
+            critical_percentage=${bar.critical_at}
+            action_on_low=1
+            action_on_critical=1
+            hide_when_full=0
+            colorA=${bar.color_loading}
+            colorH=${bar.color_default}
+            colorL=${bar.color_warning}
+            colorC=${bar.color_critical}
+            command_on_low=
+            command_on_critical=
+          '';
           source = ./dotfiles/battery.rc;
         };
 
