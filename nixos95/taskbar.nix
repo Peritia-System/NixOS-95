@@ -6,6 +6,7 @@
   cfg = config.nixos95.taskbar;
   user = config.nixos95.user;
   t = lib.types;
+  slib = pkgs.callPackage ./util/lib.nix { };
 in {
 
   options.nixos95.taskbar = {
@@ -108,14 +109,14 @@ in {
           battery_xml = ifBattery '' <property name="plugin-7" type="string" value="battery" /> '';
 
           applications_cfg = cfg.applications
-            |> lib.filter ( elm : !( lib.hasAttr "enable" elm) || elm.enable )
+            |> lib.filter slib.isEnable
             |> lib.imap0 ( ptr : elm : rec {
               # we start IDs in the 20 range to not get confilics with other plugins
               plugin_id = "2" + builtins.toString ptr; 
               plugin_desktop = let 
                 desc = if elm ? description then elm.description else "";
                 term = if elm ? term && elm.term then "true" else "false";
-                exec = if elm ? pkg then lib.getExe elm.pkg else elm.exe;
+                exec = slib.getExe elm;
               in pkgs.writeTextFile {
                 name = "${elm.name}.desktop";
                 text = ''
