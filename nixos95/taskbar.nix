@@ -159,7 +159,6 @@ in {
             command_on_low=
             command_on_critical=
           '';
-          source = ./dotfiles/battery.rc;
         };
 
         "xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml" = let 
