@@ -7,7 +7,7 @@ in {
     wallpaper = lib.mkOption {
       description = "The wallpaper to use";
       type = lib.types.path;
-      default = "${inputs.self}/Ressources/Images/Wallpapers/Wallpaper-1.png";
+      default = ../Ressources/Images/Wallpapers/Wallpaper-1.png;
     };
 
   };
