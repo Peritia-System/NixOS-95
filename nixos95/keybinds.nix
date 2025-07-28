@@ -94,6 +94,7 @@ in {
               <property name="xfwm4" type="empty">
                 <property name="custom" type="empty">
                   <property name="override" type="bool" value="true" />
+                  ${builtins.readFile ./dotfiles/xfwm4-keybinds.xml}
                   ${xfwm4_xml}
                 </property>
               </property>
