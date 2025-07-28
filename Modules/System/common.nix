@@ -39,7 +39,7 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"];
   nixpkgs.config.allowUnfree = true;
 
   console.keyMap = "de";

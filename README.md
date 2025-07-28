@@ -100,6 +100,13 @@ Some have been lightly edited. Originals were created by [aconfuseddragon](https
    home-manager switch
    ```
 
+### Experimental Features
+
+NixOS-95 relys on multiple experimental nix features. These are:
+1. [flakes](https://wiki.nixos.org/wiki/Flakes)
+2. [pipe-operators](https://nix.dev/manual/nix/2.26/language/operators#pipe-operators)
+They are needed to activate the configuration.
+
 ### Rebuild Notes
 
 Due to how **Home Manager** and XFCE handle theming, changes may not fully apply on the first attempt.
