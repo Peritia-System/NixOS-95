@@ -91,7 +91,9 @@ Some have been lightly edited. Originals were created by [aconfuseddragon](https
 3. **Build and switch to the system configuration**:
 
    ```bash
-   sudo nixos-rebuild switch --flake .#default
+   sudo nixos-rebuild switch --flake .#default \
+        --extra-experimental-features flakes \
+        --extra-experimental-features pipe-operators
    ```
 
 4. **Apply user settings with Home Manager**:
@@ -106,6 +108,13 @@ NixOS-95 relys on multiple experimental nix features. These are:
 1. [flakes](https://wiki.nixos.org/wiki/Flakes)
 2. [pipe-operators](https://nix.dev/manual/nix/2.26/language/operators#pipe-operators)
 They are needed to activate the configuration.
+
+To enable them in your config set:
+```nix
+nix.settings.experimental-features = [
+    "flakes" "pipe-operators"
+];
+```
 
 ### Rebuild Notes
 
