@@ -71,7 +71,7 @@ Some have been lightly edited. Originals were created by [aconfuseddragon](https
 
 ---
 
-## Installation
+## Installation - BETA
 
 > Requires a NixOS install.
 
@@ -82,21 +82,25 @@ Some have been lightly edited. Originals were created by [aconfuseddragon](https
    cd NixOS
    ```
 
-2. **Regenerate hardware configuration**:
+2. **Switch to Dev**:
+
+   ```bash
+   git switch Dev 
+   ```
+
+3. **Regenerate hardware configuration**:
 
    ```bash
    sudo nixos-generate-config --dir Configurations/Hosts/Default
    ```
 
-3. **Build and switch to the system configuration**:
+4. **Build and switch to the system configuration**:
 
    ```bash
-   sudo nixos-rebuild switch --flake .#default \
-        --extra-experimental-features flakes \
-        --extra-experimental-features pipe-operators
+   sudo NIX_CONFIG="experimental-features = nix-command flakes pipe-operators" nixos-rebuild switch --flake .#default
    ```
 
-4. **Apply user settings with Home Manager**:
+5. **Apply user settings with Home Manager**:
 
    ```bash
    home-manager switch
