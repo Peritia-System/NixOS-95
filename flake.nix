@@ -6,7 +6,7 @@
   };
 
   outputs = { self, nixpkgs, ... }: {
-    nixosModules.nixos95 = import ./nixos95;
+    nixosModules.default = import ./nixos95;
   };
 }
 
