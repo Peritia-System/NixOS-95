@@ -60,7 +60,7 @@ NixOS-95/
 # flake.nix
 {
   inputs = {
-    nixos95.url = "github:Peritia-System/NixOS-95/Beta-import";
+    nixos95.url = "github:Peritia-System/NixOS-95/Dev";
     nixos95.inputs.nixpkgs.follows = "nixpkgs";
   }
   outputs = inputs @ { nixpkgs, nixos95, ... }: {
