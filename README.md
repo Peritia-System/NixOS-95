@@ -25,19 +25,6 @@ This is a **NixOS configuration** designed to evoke the pixel-perfect charm of *
 NixOS-95/
 ├── flake.nix
 ├── flake.lock
-├── Configurations/
-│   └── Hosts/
-│       └── Default/
-│           ├── configuration.nix
-│           ├── hardware-configuration.nix
-│           ├── user.nix
-│           ├── home/
-│           │   ├── home.nix
-│           │   ├── desktop.nix
-│           │   └── user-packages.nix
-│           └── variables/
-│               ├── system-vars.nix
-│               └── user-vars.nix
 ├── Modules/
 │   ├── Applications/
 │   └── System/
@@ -60,51 +47,95 @@ NixOS-95/
 </details>
 
 ---
-
-### Wallpaper and Aesthetics
-
-Wallpapers are located in `./Resources/Images/Wallpapers`.  
-Some have been lightly edited. Originals were created by [aconfuseddragon](https://aconfuseddragon.itch.io/downloads).  
-
-> I **do not own** any of the icons or wallpapers.  
-> If you showcase or redistribute them, **please credit the original artists**.
-
----
-
 ## Installation - BETA
 
-> Requires a NixOS install.
+> Requirements:
+  nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"]; 
+  Enabled
 
-1. **Clone the repository**:
 
-   ```bash
-   git clone https://github.com/peritia-system/NixOS-95.git NixOS
-   cd NixOS
-   ```
+### 1. Add Nyx to your flake
 
-2. **Switch to Dev**:
+```nix
+# flake.nix
+{
+  inputs = {
+    nixos95.url = "github:Peritia-System/NixOS-95/Dev";
+    nixos95.inputs.nixpkgs.follows = "nixpkgs";
+  }
+  outputs = inputs @ { nixpkgs, nixos95, ... }: {
+    nixosConfigurations.HOSTNAME = nixpkgs.lib.nixosSystem {
+      modules = [ ./configuration.nix ];
+    };
+  };
+}
+```
 
-   ```bash
-   git switch Dev 
-   ```
+### 2. Import in Configuration.nix
 
-3. **Regenerate hardware configuration**:
+```nix
+# configuration.nix
+{
+  imports = [ inputs.self.nixosModules.nixos95 ];
+}
+```
 
-   ```bash
-   sudo nixos-generate-config --dir Configurations/Hosts/Default
-   ```
+### 3. Enable modules
+
+```nix
+{
+  # configuration.nix / or sth imported by the main config
+  nixos95 = {
+    enable = true;
+    user = "alex";
+
+    taskbar = {
+      homeIcon = "whisker-menu-button";
+      battery-plugin.enable = false;
+      applications = [
+        {
+          name = "Brave";
+          description = "Browse the Web";
+          pkg = pkgs.brave;
+          icon = "world";
+        }
+        {
+          name = "Signal";
+          description = "Private Messenger";
+          pkg = pkgs.signal-desktop;
+          icon = "signal";
+        }
+        {
+          name = "Obsidian";
+          description = "Markdown Editor";
+          exe = "obsidian %u";
+          icon = "obsidian";
+        }
+        {
+          name = "Spotify";
+          description = "Spotify Music";
+          exe = "spotify %U";
+          icon = "spotify";
+        }
+      ];
+    };
+
+    keybinds = {
+      commands = [
+        { key="<Super>l";  exe="xflock4"; }
+      ];
+    };
+  };
+
+}
+```
 
 4. **Build and switch to the system configuration**:
 
    ```bash
    sudo NIX_CONFIG="experimental-features = nix-command flakes pipe-operators" nixos-rebuild switch --flake .#default
    ```
-
-5. **Apply user settings with Home Manager**:
-
-   ```bash
-   home-manager switch
-   ```
+w
 
 ### Experimental Features
 
