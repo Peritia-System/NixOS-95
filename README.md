@@ -71,6 +71,17 @@ NixOS-95/
 }
 ```
 
+If you are using home-manager you should also pin your version for Nixos95:
+```
+{
+    inputs = {
+        ...
+        nixos95.inputs.home-manager.follows = "home-manager";
+    };
+    ...
+}
+```
+
 ### 2. Import in Configuration.nix
 
 ```nix
