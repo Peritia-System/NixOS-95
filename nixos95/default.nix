@@ -1,4 +1,4 @@
-{ config, lib, ...}: let 
+{ home-manager }: { config, lib, ...}: let 
   cfg = config.nixos95;
 in {
 
@@ -14,6 +14,8 @@ in {
   };
 
   imports = [
+    home-manager.nixosModules.home-manager
+
     ./core.nix
     ./desktop.nix
     ./keybinds.nix

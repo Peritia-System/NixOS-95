@@ -53,6 +53,15 @@ NixOS-95/
   nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"]; 
   Enabled
 
+You can initilize a new flake-based configuration with:
+``` 
+# minimal
+nix flake init -t github:Peritia-System/NixOS-95/Dev
+# with home-manager
+nix flake init -t github:Peritia-System/NixOS-95/Dev#home-manager
+```
+
+Or follow the manual installation process:
 
 ### 1. Add Nyx to your flake
 
@@ -68,6 +77,17 @@ NixOS-95/
       modules = [ ./configuration.nix ];
     };
   };
+}
+```
+
+If you are using home-manager you should also pin your version for Nixos95:
+```
+{
+    inputs = {
+        ...
+        nixos95.inputs.home-manager.follows = "home-manager";
+    };
+    ...
 }
 ```
 
