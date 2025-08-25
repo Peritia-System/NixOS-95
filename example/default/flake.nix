@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
     nixos95 = {
-      url = "github:Peritia-System/NixOS-95/Dev";
+      url = "github:Peritia-System/NixOS-95";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
