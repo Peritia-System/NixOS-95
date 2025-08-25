@@ -2,6 +2,9 @@
   cfg = config.nixos95;
 in lib.mkIf cfg.enable {
 
+
+  home-manager.users.${cfg.user}.home.stateVersion = lib.mkDefault "25.05";
+
   services.xserver = {
     enable = true;
     desktopManager.xfce.enable = true;
