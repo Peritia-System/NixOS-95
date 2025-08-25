@@ -24,7 +24,7 @@
       '';
     };
 
-    templates.default = {
+    templates.home-manager = {
       description = "Minimal Nixos-95 configuration with home-manager";
       path = ./example/home-manager;
       welcomeText = ''
