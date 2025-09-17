@@ -16,7 +16,8 @@ in {
       '';
       type = t.listOf t.attrs;
       default = let 
-        amixer = lib.getExe' pkgs.alsa-utils;
+        # relies on pulseaudio
+        pactl = lib.getExe' pkgs.pulseaudio "pactl";
       in [
         {
           key = "XF86WWW";
@@ -40,15 +41,15 @@ in {
         }
         {
           key = "XF86AudioMute";
-          exe = "${amixer} set Master toggle";
+          exe = "${pactl} set-sink-mute @DEFAULT_SINK@ toggle";
         }
         {
           key = "XF86AudioLowerVolume";
-          exe = "${amixer} set Master 5%-";
+          exe = "${pactl} set-sink-volume @DEFAULT_SINK@ -5%";
         }
         {
           key = "XF86AudioRaiseVolume";
-          exe = "${amixer} set Master 5%+";
+          exe = "${pactl} set-sink-volume @DEFAULT_SINK@ +5%";
         }
       ];
     };
