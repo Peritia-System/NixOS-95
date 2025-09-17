@@ -32,6 +32,10 @@ in {
           key = "<SUPER><Shift>s";
           exe = "xfce4-screenshooter --fullscreen";
         }
+        {
+          key = "Super_L";
+          pkg = pkgs.xfce.xfce4-whiskermenu-plugin; # open whiskermenu with a press on SUPER like on windows
+        }
       ];
     };
     commands = lib.mkOption {
