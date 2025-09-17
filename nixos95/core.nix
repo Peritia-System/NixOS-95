@@ -22,4 +22,8 @@ in lib.mkIf cfg.enable {
 
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
+  environment.systemPackages = [
+    pkgs.xfce.xfce4-screenshooter
+  ];
+
 }
