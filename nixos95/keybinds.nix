@@ -15,7 +15,9 @@ in {
         INTERNAL: additional default keyboard shortcuts to add
       '';
       type = t.listOf t.attrs;
-      default = [
+      default = let 
+        amixer = lib.getExe' pkgs.alsa-utils;
+      in [
         {
           key = "XF86WWW";
           exe = "exo-open --launch WebBrowser";
@@ -35,6 +37,18 @@ in {
         {
           key = "Super_L";
           pkg = pkgs.xfce.xfce4-whiskermenu-plugin; # open whiskermenu with a press on SUPER like on windows
+        }
+        {
+          key = "XF86AudioMute";
+          exe = "${amixer} set Master toggle";
+        }
+        {
+          key = "XF86AudioLowerVolume";
+          exe = "${amixer} set Master 5%-";
+        }
+        {
+          key = "XF86AudioRaiseVolume";
+          exe = "${amixer} set Master 5%+";
         }
       ];
     };
