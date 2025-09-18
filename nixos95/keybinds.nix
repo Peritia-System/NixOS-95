@@ -9,6 +9,50 @@
 in {
 
   options.nixos95.keybinds = {
+    default_commands = lib.mkOption {
+      internal = true;
+      description = ''
+        INTERNAL: additional default keyboard shortcuts to add
+      '';
+      type = t.listOf t.attrs;
+      default = let 
+        # relies on pulseaudio
+        pactl = lib.getExe' pkgs.pulseaudio "pactl";
+      in [
+        {
+          key = "XF86WWW";
+          exe = "exo-open --launch WebBrowser";
+        }
+        {
+          key = "XF86Mail";
+          exe = "exo-open --launch MailReder";
+        }
+        {
+          key = "Print";
+          exe = "xfce4-screenshooter";
+        }
+        {
+          key = "<SUPER><Shift>s";
+          exe = "xfce4-screenshooter --fullscreen";
+        }
+        {
+          key = "Super_L";
+          pkg = pkgs.xfce.xfce4-whiskermenu-plugin; # open whiskermenu with a press on SUPER like on windows
+        }
+        {
+          key = "XF86AudioMute";
+          exe = "${pactl} set-sink-mute @DEFAULT_SINK@ toggle";
+        }
+        {
+          key = "XF86AudioLowerVolume";
+          exe = "${pactl} set-sink-volume @DEFAULT_SINK@ -5%";
+        }
+        {
+          key = "XF86AudioRaiseVolume";
+          exe = "${pactl} set-sink-volume @DEFAULT_SINK@ +5%";
+        }
+      ];
+    };
     commands = lib.mkOption {
       description = ''
         Keyboard shortcuts that should be made available.
@@ -29,18 +73,6 @@ in {
         {
           key = "<Super>r";
           exe = "xfce4-appfinder --collapsed";
-        }
-        {
-          key = "XF86WWW";
-          exe = "exo-open --launch WebBrowser";
-        }
-        {
-          key = "XF86Mail";
-          exe = "exo-open --launch MailReder";
-        }
-        {
-          key = "Print";
-          exe = "xfce4-screenshooter";
         }
       ];
     };
@@ -76,6 +108,7 @@ in {
             exe = lib.escapeXML (slib.getExe elm);
           in '' <property name="${key}" type="string" value="${exe}"/> '')
           |> lib.concatStringsSep "\n";
+        default_commands_xml = to_xml cfg.default_commands;
         commands_xml = to_xml cfg.commands;
         xfwm4_xml = to_xml cfg.xfwm4;
       in {
@@ -88,6 +121,7 @@ in {
               <property name="commands" type="empty">
                 <property name="custom" type="empty">
                   <property name="override" type="bool" value="true" />
+                  ${default_commands_xml}
                   ${commands_xml}
                 </property>
               </property>
