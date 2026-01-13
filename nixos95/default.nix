@@ -17,7 +17,7 @@ in {
     home-manager.nixosModules.home-manager
 
     ./core.nix
-    ./desktop.nix
+    #./desktop.nix
     ./keybinds.nix
     ./taskbar.nix
     ./theme.nix

@@ -37,7 +37,7 @@ in {
         }
         {
           key = "Super_L";
-          pkg = pkgs.xfce.xfce4-whiskermenu-plugin; # open whiskermenu with a press on SUPER like on windows
+          pkg = pkgs.xfce4-whiskermenu-plugin; # open whiskermenu with a press on SUPER like on windows
         }
         {
           key = "XF86AudioMute";

@@ -108,7 +108,7 @@ in {
           name = "Terminal";
           description = "Run commands";
           icon = "xfce4-terminal";
-          pkg = pkgs.xfce.xfce4-terminal;
+          pkg = pkgs.xfce4-terminal;
         }
         {
           name = "Browser";
@@ -125,8 +125,8 @@ in {
   config = lib.mkIf config.nixos95.enable {
 
     environment.systemPackages = [
-      pkgs.xfce.xfce4-whiskermenu-plugin
-      (lib.mkIf cfg.battery-plugin.enable pkgs.xfce.xfce4-battery-plugin)
+      pkgs.xfce4-whiskermenu-plugin
+      (lib.mkIf cfg.battery-plugin.enable pkgs.xfce4-battery-plugin)
     ];
 
     home-manager.users.${user} = {

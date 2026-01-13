@@ -142,7 +142,7 @@ If you want to further customize Nixos95 you can use the following config option
         name = "Terminal";
         description = "Run commands";
         icon = "xfce4-terminal";
-        pkg = pkgs.xfce.xfce4-terminal;
+        pkg = pkgs.xfce4-terminal;
       }
       {
         name = "Browser";
