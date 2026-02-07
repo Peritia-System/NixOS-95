@@ -1,0 +1,2 @@
+example/*/flake.lock
+example/*/hardware-configuration.nix

@@ -25,26 +25,17 @@ This is a **NixOS configuration** designed to evoke the pixel-perfect charm of *
 NixOS-95/
 ├── flake.nix
 ├── flake.lock
-├── Configurations/
-│   └── Hosts/
-│       └── Default/
-│           ├── configuration.nix
-│           ├── hardware-configuration.nix
-│           ├── user.nix
-│           ├── home/
-│           │   ├── home.nix
-│           │   ├── desktop.nix
-│           │   └── user-packages.nix
-│           └── variables/
-│               ├── system-vars.nix
-│               └── user-vars.nix
 ├── Modules/
 │   ├── Applications/
-│   ├── Desktops/
-│   │   └── XFCE-retro/
-│   │       ├── default.nix
-│   │       └── Dotfiles/
 │   └── System/
+├── nixos95
+│   ├── dotfiles/
+│   ├── core.nix
+│   ├── default.nix
+│   ├── desktop.nix
+│   ├── keybinds.nix
+│   ├── taskbar.nix
+│   └── theme.nix
 ├── Ressources/
 │   ├── Icons/
 │   ├── Images/
@@ -56,45 +47,144 @@ NixOS-95/
 </details>
 
 ---
+## Installation - BETA
 
-### Wallpaper and Aesthetics
+> Requirements:
+  nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"]; 
+  Enabled
 
-Wallpapers are located in `./Resources/Images/Wallpapers`.  
-Some have been lightly edited. Originals were created by [aconfuseddragon](https://aconfuseddragon.itch.io/downloads).  
+You can initilize a new flake-based configuration with:
+``` 
+# minimal
+nix flake init -t github:Peritia-System/NixOS-95/Dev
+# with home-manager
+nix flake init -t github:Peritia-System/NixOS-95/Dev#home-manager
+```
 
-> I **do not own** any of the icons or wallpapers.  
-> If you showcase or redistribute them, **please credit the original artists**.
+Or follow the manual installation process:
 
----
+### 1. Add Nixos95 to your flake and import the module
 
-## Installation
+```nix
+# flake.nix
+{
+  inputs = {
+    nixos95.url = "github:Peritia-System/NixOS-95/Dev";
+    nixos95.inputs.nixpkgs.follows = "nixpkgs";
+  }
+  outputs = inputs @ { nixos95, ... }: {
+    nixosConfigurations.HOSTNAME = nixpkgs.lib.nixosSystem {
+      modules = [ 
+        nixos95.nixosModules.default
+        ./configuration.nix 
+      ];
+    };
+  };
+}
+```
 
-> Requires a NixOS install.
+If you are using home-manager you should also pin your version for Nixos95:
+```
+{
+    inputs = {
+        ...
+        nixos95.inputs.home-manager.follows = "home-manager";
+    };
+    ...
+}
+```
 
-1. **Clone the repository**:
+### 2. Import in Configuration.nix
 
-   ```bash
-   git clone https://github.com/peritia-system/NixOS-95.git NixOS
-   cd NixOS
-   ```
+You can configure Nixos95 under the `nixos95` namespace. For a minimal config just set:
+```
+{
+    nixos95.enable = true;
+}
+```
 
-2. **Regenerate hardware configuration**:
+> Warning: This will activate the xfce desktop manager, as well as lightdm and ssdm as display manager.
+> You might want to disable your other desktop environment to prevent bugs.
 
-   ```bash
-   sudo nixos-generate-config --dir Configurations/Hosts/Default
-   ```
+If you want to further customize Nixos95 you can use the following config options (given values are the default ones):
 
-3. **Build and switch to the system configuration**:
+```nix
+{
+  nixos95 = {
+    enable = true; # default is false
+    user = "USERNAME"; # no default set; specifies the user used by home-manager
 
-   ```bash
-   sudo nixos-rebuild switch --flake .#default
-   ```
+    wallpaper = ./Resources/Images/Wallpapers/Wallpaper-1.png;
 
-4. **Apply user settings with Home Manager**:
+    taskbar = {
+      homeIcon = "whisker-menu-button";
+      battery-plugin = {
+        enable = true;
+        power_bar = {
+            enabe = true;
+            critical_at = 10;
+            warning_at = 20;
+            color_warning = "rgb(248,228,92)";
+            color_critical = "rgb(237,51,59)";
+            color_loading = "rgb(119,118,123)";
+            color_default = "rgb(143,240,164)";
+        };
+      };
+    };
+    applications = [
+      {
+        name = "Files";
+        description = "View and manage local files";
+        icon = "folder_open";
+        exe = "exo-open --launch FileManager";
+      }
+      {
+        name = "Terminal";
+        description = "Run commands";
+        icon = "xfce4-terminal";
+        pkg = pkgs.xfce4-terminal;
+      }
+      {
+        name = "Browser";
+        description = "Access the world wide web";
+        icon = "firefox";
+        exe = "exo-open --launch WebBrowser";
+      }
+    ];
 
-   ```bash
-   home-manager switch
-   ```
+    keybinds = {
+      commands = [
+        { key = "<Super>r"; exe = "xfce4-appfinder --collapsed"; }
+        { key = "XF86WWW"; exe = "exo-open --launch WebBrowser"; }
+        { key = "XF86Mail"; exe = "exo-open --launch MailReder"; }
+        { key = "Print"; exe = "xfce4-screenshooter"; }
+        { key="<Super>l";  exe="xflock4"; }
+      ];
+      xfwm4 = [ ];
+    };
+  };
+}
+```
+
+### 3. **Build and switch to the system configuration**:
+
+```bash
+sudo NIX_CONFIG="experimental-features = nix-command flakes pipe-operators" nixos-rebuild switch --flake .#default
+```
+
+### Experimental Features
+
+NixOS-95 relys on multiple experimental nix features. These are:
+1. [flakes](https://wiki.nixos.org/wiki/Flakes)
+2. [pipe-operators](https://nix.dev/manual/nix/2.26/language/operators#pipe-operators)
+They are needed to activate the configuration.
+
+To enable them in your config set:
+```nix
+nix.settings.experimental-features = [
+  "flakes" "pipe-operators"
+];
+```
 
 ### Rebuild Notes
 
