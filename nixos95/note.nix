@@ -25,7 +25,8 @@ in
 
       or switch to the new repo:
 
-      nixos95.url = "git+https://git.alovely.space/Nyx/NixOS-95"
+      nixos95.url = "git+https://git.alovely.space/Nyx/NixOS-95";
+      
       ''
     ];
   };
