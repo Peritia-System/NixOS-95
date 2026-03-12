@@ -13,7 +13,7 @@ in {
     };
   };
 
-  options.nixos95.ignoreNote = lib.mkOption {
+  options.nixos95.ignoreDeprecationNote = lib.mkOption {
     type = lib.types.bool;
     default = false;
     description = "Disable the deprecation warning. And accept potential breakages.";
