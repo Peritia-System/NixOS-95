@@ -13,6 +13,12 @@ in {
     };
   };
 
+  options.nixos95.ignoreDeprecationNote = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    description = "Disable the deprecation warning. And accept potential breakages.";
+  };
+
   imports = [
     home-manager.nixosModules.home-manager
 
@@ -21,6 +27,7 @@ in {
     ./keybinds.nix
     ./taskbar.nix
     ./theme.nix
+    ./note.nix
   ];
 
 }
